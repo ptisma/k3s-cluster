@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## Install Docker
+
 # Update package list and install prerequisite packages
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
@@ -24,3 +26,20 @@ sudo systemctl start docker
 docker --version
 
 echo "Docker installation completed."
+
+## Install Kubectl
+
+# Install prerequisite packages
+sudo apt-get install -y gnupg
+
+# Download the public signing key for the Kubernetes package repositories
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+# Add the appropriate Kubernetes apt repository
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list   # helps tools such as command-not-found to work correctly
+
+# Update apt package index, then install kubectl
+sudo apt-get update
+sudo apt-get install -y kubectl
