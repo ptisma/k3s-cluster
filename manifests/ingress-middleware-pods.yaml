@@ -16,7 +16,18 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - http:
+  - host: "ptisma.xyz"
+    http:
+      paths:
+      - path: /nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
+  - host: "www.ptisma.xyz"
+    http:
       paths:
       - path: /nginx
         pathType: Prefix
