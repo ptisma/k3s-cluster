@@ -12,7 +12,7 @@ kind: Ingress
 metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: default-stripprefix@kubernetescrd
-    cert-manager.io/issuer: "letsencrypt-prod"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
   name: test-nginx-ingress
 spec:
   ingressClassName: traefik
