@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export CONFIG=/root/k3s-cluster/k3s-master/config.yaml
+export CONFIG=/root/k3s-cluster/k3s-server/config.yaml
 
 curl -sfL https://get.k3s.io | sh -s - -c $CONFIG --node-ip $IP
 
