@@ -2,7 +2,7 @@
 
 export CONFIG=/root/k3s-cluster/k3s-server/config.yaml
 
-curl -sfL https://get.k3s.io | sh -s - -c $CONFIG --node-ip $IP
+curl -sfL https://get.k3s.io | sh -s - -c $CONFIG --flannel-iface $INTERFACE
 
 echo "MASTER SERVER TOKEN AT /var/lib/rancher/k3s/server/node-token"
 

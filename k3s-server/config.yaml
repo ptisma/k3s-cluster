@@ -1,1 +1,1 @@
-docker: true
+docker: true # use the cri-dockerd instead of containerd
