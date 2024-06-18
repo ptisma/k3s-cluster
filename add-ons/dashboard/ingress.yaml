@@ -1,0 +1,28 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: insecure-transport
+  namespace: kubernetes-dashboard
+spec:
+  insecureSkipVerify: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/service.serverstransport: "kubernetes-dashboard@insecure-transport"
+  name: dashboard
+  namespace: kubernetes-dashboard
+spec:
+  rules:
+  - host: ptisma.xyz
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: kubernetes-dashboard-web
+              port:
+                number: 8000
