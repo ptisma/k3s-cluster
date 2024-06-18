@@ -36,6 +36,15 @@ NAME     STATUS   ROLES                  AGE   VERSION        INTERNAL-IP   EXTE
 node-0   Ready    control-plane,master   84s   v1.29.5+k3s1   10.0.0.3      <none>        Ubuntu 22.04.3 LTS   5.15.0-112-generic   docker://26.1.4
 
 Note: the external-ip here is empty because we have no cloud controller manager installed
+
+## Access
+Connect to the k3s server node using SSH and use kubectl there
+
+Access the cluster from outside:
+Copy /etc/rancher/k3s/k3s.yaml to local ~/.kube/config 
+In the config change name to server's public IP (ensure tls-san option is set!)
+Use kubectl locally
+
 ## Uninstall
 To uninstall the k3s server node run these commands:
 sudo /usr/local/bin/k3s-uninstall.sh
