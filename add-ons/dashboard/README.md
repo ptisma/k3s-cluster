@@ -8,7 +8,7 @@ kubectl apply -f rbac.yaml
 
 kubectl -n kubernetes-dashboard create token admin-user
 
-From your host machine:
+Local access, from your host machine:
 kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
 
 visit localhost:8443 and login using bearer token

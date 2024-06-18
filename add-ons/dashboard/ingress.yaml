@@ -10,7 +10,8 @@ spec:
   tls:
   - hosts:
     - ptisma.xyz
-    - www.ptisma.xyz  
+    - www.ptisma.xyz
+    secretName: ptisma-xyz-tls  
   rules:
   - host: ptisma.xyz
     http:
