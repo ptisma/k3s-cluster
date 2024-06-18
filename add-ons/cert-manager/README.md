@@ -57,7 +57,7 @@ kind: Ingress
 metadata:
   name: kuard
   annotations:
-    cert-manager.io/issuer: "letsencrypt-prod" # CONFIGURE
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" # CONFIGURE 
 
 spec:
   ingressClassName: nginx
