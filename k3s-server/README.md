@@ -42,7 +42,7 @@ Connect to the k3s server node using SSH and use kubectl there
 
 Access the cluster from outside:
 Copy /etc/rancher/k3s/k3s.yaml to local ~/.kube/config 
-In the config change name to server's public IP (ensure tls-san option is set and 6643 is open in network wherever the local kubectl is, change in firewall rule needed!)
+In the config change name to server's public IP (ensure tls-san option is set and 6443 is open in network wherever the local kubectl is, change in firewall rule needed!)
 Use kubectl locally
 
 ## Uninstall
