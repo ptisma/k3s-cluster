@@ -12,17 +12,17 @@ kind: Ingress
 metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: default-stripprefix@kubernetescrd
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    cert-manager.io/issuer: "letsencrypt-prod"
   name: test-nginx-ingress
 spec:
   ingressClassName: traefik
   tls:
   - hosts:
     - ptisma.xyz
-    - www.ptisma.xyz          
+    - www.ptisma.xyz      
     secretName: ptisma-xyz-tls
   rules:
-  - host: "ptisma.xyz"
+  - host: ptisma.xyz
     http:
       paths:
       - path: /nginx
@@ -32,16 +32,14 @@ spec:
             name: nginx-service
             port:
               number: 80
-  - host: "www.ptisma.xyz"
+  - host: ptisma.xyz
     http:
       paths:
-      - path: /nginx
+      - path: /local
         pathType: Prefix
         backend:
           service:
-            name: nginx-service
-            port:
-              number: 80
+            name: external-nginx-service
 ---
 apiVersion: v1
 kind: Service
@@ -54,6 +52,14 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: external-nginx-service
+spec:
+  type: ExternalName
+  externalName: "10.0.0.3:8080"
 ---
 apiVersion: apps/v1
 kind: Deployment
