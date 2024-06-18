@@ -1,1 +1,3 @@
 docker: true # use the cri-dockerd instead of containerd
+tls-san:
+- 23.88.58.171
