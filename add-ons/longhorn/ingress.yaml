@@ -13,7 +13,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-    traefik.ingress.kubernetes.io/router.middlewares: "kubernetes-dashboard-stripprefix@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-stripprefix@kubernetescrd"
     ingress.kubernetes.io/auth-type: "basic"
     ingress.kubernetes.io/auth-secret: "basic-auth"
   name: longhorn
