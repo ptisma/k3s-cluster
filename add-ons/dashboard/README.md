@@ -23,7 +23,7 @@ kubectl apply -f ingress.yaml
 Start Traefik with insecureSkipVerify option which means it doesn't validate SSL certs, we have self-signed, without this I get the internal server error, alternative workaround would be 
 to either create the IngressRoute and ServersTransport CRD-s instead:
 
-Create this static manifest at /var/lib/rancher/k3s/server/manifests/traefik-config.yaml:
+Create this static manifest at /var/lib/rancher/k3s/server/manifests/traefik-config.yaml, if it does not get picked up, apply it manually:
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
