@@ -14,3 +14,6 @@ kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy
 visit localhost:8443 and login using bearer token
 
 Note: node VM have to have the socat installed for port-forward, install with sudo apt-get install socat
+
+Access via Ingress:
+kubectl apply -f rbac.yaml

@@ -1,8 +1,17 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: ServersTransport
+metadata:
+  name: insecure-transport
+  namespace: kubernetes-dashboard
+spec:
+  insecureSkipVerify: true
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
+    traefik.ingress.kubernetes.io/service.serverstransport: "kubernetes-dashboard@insecure-transport"
   name: dashboard
   namespace: kubernetes-dashboard
 spec:
@@ -20,9 +29,9 @@ spec:
           path: "/"
           backend:
             service:
-              name: kubernetes-dashboard-web
+              name: kubernetes-dashboard-kong-proxy
               port:
-                number: 8000
+                number: 443
   - host: www.ptisma.xyz
     http:
       paths:
@@ -30,6 +39,6 @@ spec:
           path: "/"
           backend:
             service:
-              name: kubernetes-dashboard-web
+              name: kubernetes-dashboard-kong-proxy
               port:
-                number: 8000
+                number: 443
