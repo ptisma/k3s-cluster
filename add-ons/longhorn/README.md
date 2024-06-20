@@ -4,32 +4,27 @@ Longhorn distributes block storage across multiple nodes in a Kubernetes cluster
 
 
 ## Setup
-
-Using kubectl:
-kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/deploy/longhorn.yaml
-
-Using Helm:
-helm repo add longhorn https://charts.longhorn.io
-helm repo update
-helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.6.2
-
-
-## Uninstall
-Using kubectl:
-kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/uninstall/uninstall.yaml
-
-Using Helm:
-helm uninstall longhorn -n longhorn-system
-
-
-## New try
-
+Check if the node VM meets the Longhorn system requirements with a script:
 curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/scripts/environment_check.sh | bash
 
+Install Longhorn using Helm:
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.6.2
 kubectl -n longhorn-system get pod
 
+Set the credentials to access the Longhorn UI:
 USER=admin; PASSWORD=admin; echo "${USER}:$(openssl passwd -stdin -apr1 <<< ${PASSWORD})" >> auth
+kubectl -n longhorn-system create secret generic basic-auth --from-file=auth
+
+Deploy ingress to access the Longhorn UI (by default the Longhorn UI works only on '/' so replacePathRegex was used on ingress):
+kubectl apply -f ingress.yaml
+
+Use the credentials you defined in the secret to access the Longhorn UI
+## Uninstall
+Using kubectl:
+kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/uninstall/uninstall.yaml
+
+Using Helm:
+helm uninstall longhorn -n longhorn-system

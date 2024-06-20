@@ -1,29 +1,29 @@
-# apiVersion: traefik.containo.us/v1alpha1
-# kind: Middleware
-# metadata:
-#   name: my-auth-middleware
-#   namespace: longhorn-system
-# spec:
-#   basicAuth:
-#     removeHeader: true
-#     secret: basic-auth
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: my-auth-middleware
+  namespace: longhorn-system
+spec:
+  basicAuth:
+    removeHeader: true
+    secret: basic-auth
 ---
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: stripprefix
+  name: replacepath
   namespace: longhorn-system
 spec:
-  stripPrefix:
-    prefixes:
-      - /longhorn
+ replacePathRegex:
+    regex: "^/longhorn(/|$)(.*)"
+    replacement: "/${2}"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-stripprefix@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-replacepath@kubernetescrd,longhorn-system-my-auth-middleware@kubernetescrd"
   name: longhorn
   namespace: longhorn-system
 spec:
@@ -54,4 +54,3 @@ spec:
               name: longhorn-frontend
               port:
                 number: 80
-                
