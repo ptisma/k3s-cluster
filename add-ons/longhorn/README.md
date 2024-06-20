@@ -21,6 +21,7 @@ kubectl -n longhorn-system create secret generic basic-auth --from-file=auth
 Deploy ingress to access the Longhorn UI (by default the Longhorn UI works only on '/' so replacePathRegex was used on ingress):
 kubectl apply -f ingress.yaml
 
+Note: for some reason when the path /longhorn is set, the blank white page is rendered so it works only with /longhorn/
 Use the credentials you defined in the secret to access the Longhorn UI
 ## Uninstall
 Using kubectl:
