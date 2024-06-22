@@ -8,7 +8,7 @@ Check if the node VM meets the Longhorn system requirements with a script:
 curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/scripts/environment_check.sh | bash
 
 Install Longhorn using Helm:
-export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
 helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --version 1.6.2
@@ -23,6 +23,7 @@ kubectl apply -f ingress.yaml
 
 Note: for some reason when the path /longhorn is set, the blank white page is rendered so it works only with /longhorn/
 Use the credentials you defined in the secret to access the Longhorn UI
+
 ## Uninstall
 Using kubectl:
 kubectl create -f https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/uninstall/uninstall.yaml

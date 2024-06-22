@@ -7,3 +7,9 @@ Note: it seems if I want the pods using nodeName for my server node node-o, the 
 This will deploy a simple ingress which will connect to the service and deployment. Since the k3s comes by default installed with the Traefik Ingress Controller (check the pods on every node inside the kube-system namespace and find the traefik :), we will also have to deploy a "Traefik kind", a middleware, it's basically a component which tweaks the requests before they are sent to our service, it acts as middleware between the ingress and service.
 
 After the ingress is deployed, simply use one of the external ip of the nodes and hit the /nginx endpoint, I did preconfigure way back beore the DNS entry to point at one of my nodes, so I used that host name in the ingress.
+
+### pods-pvc-longhorn.yaml
+This will deploy a simple PVC and a pod which will mount a volume out of it. The PVC will use the longhorn storage class, as opposed to the k3's default local-path provisioner. Note the Longhorn has to be installed.
+
+Longhorn will persist and replicate the volumes in a .img format in a folder located on the node's filesystem:
+/var/lib/longhorn/replicas/
