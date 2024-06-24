@@ -1,0 +1,46 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: grpc-header-middleware
+  namespace: argocd
+spec:
+  headers:
+    customRequestHeaders:
+      Content-Type: "application/grpc"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-stage"
+    traefik.ingress.kubernetes.io/router.middlewares: "argocd-grpc-header-middleware@kubernetescrd"
+  name: argocd-ingress
+  namespace: argocd
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - ptisma.online
+    - www.ptisma.online
+    secretName: ptisma-online-tls
+  rules:
+  - host: ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/argocd"
+          backend:
+            service:
+              name: my-argo-cd-argocd-server
+              port:
+                number: 80
+  - host: www.ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/argocd"
+          backend:
+            service:
+              name: my-argo-cd-argocd-server
+              port:
+                number: 80

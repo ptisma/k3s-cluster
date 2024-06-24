@@ -25,3 +25,5 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 helm repo update
 
 helm install my-kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 60.2.0 -n kube-prometheus-stack --create-namespace
+
+TODO
