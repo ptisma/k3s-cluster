@@ -14,9 +14,12 @@ metadata:
   name: replacepath
   namespace: argocd
 spec:
- replacePathRegex:
-    regex: "^/argocd(/|$)(.*)"
-    replacement: "/${2}"
+#  replacePathRegex:
+#     regex: "^/argocd(/|$)(.*)"
+#     replacement: "/${2}"
+  stripPrefix:
+      prefixes:
+        - /argocd
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,7 +41,7 @@ spec:
     http:
       paths:
         - pathType: Prefix
-          path: "/argocd/"
+          path: "/argocd"
           backend:
             service:
               name: my-argo-cd-argocd-server
@@ -48,7 +51,7 @@ spec:
     http:
       paths:
         - pathType: Prefix
-          path: "/argocd/"
+          path: "/argocd"
           backend:
             service:
               name: my-argo-cd-argocd-server
