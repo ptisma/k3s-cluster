@@ -29,7 +29,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.middlewares: "argocd-grpc-header-middleware@kubernetescrd,argocd-replacepath@kubernetescrd"
   name: argocd-ingress
   namespace: argocd
-spec:
+spec: 
   ingressClassName: traefik
   tls:
   - hosts:
