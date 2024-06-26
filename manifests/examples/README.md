@@ -13,3 +13,12 @@ This will deploy a simple PVC and a pod which will mount a volume out of it. The
 
 Longhorn will persist and replicate the volumes in a .img format in a folder located on the node's filesystem:
 /var/lib/longhorn/replicas/
+
+### argocd-app.yaml
+
+
+https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/application.yaml
+
+### external-secrets.yaml
+This will deploy a external-secrets ClusterSecretStore and ExternalSecret. The ClusterSecretStore is using the fake provider, the ClusterSecretStore is being used by the example application "argocd-helm" which has the ExternalSecret defined in its chart.
+https://github.com/ptisma/argocd-helm

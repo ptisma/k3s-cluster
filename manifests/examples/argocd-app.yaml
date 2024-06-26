@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argocd-example-project
+  namespace: argocd
+spec:
+  sourceRepos:
+  - 'https://github.com/ptisma/argocd-helm'
+  destinations:
+  - namespace: 'argocd-helm'
+    server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-example
+  namespace: argocd # The namespace must match the namespace of your Argo CD instance
+spec:
+  project: argocd-example-project
+  source:
+    repoURL: https://github.com/ptisma/argocd-helm
+    targetRevision: main
+    path: charts/argocd-helm
+    helm:
+      parameters:
+      - name: image.tag
+        value: latest
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-helm
