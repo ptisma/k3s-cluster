@@ -16,7 +16,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-example
+  name: argocd-helm-main
   namespace: argocd # The namespace must match the namespace of your Argo CD instance
 spec:
   project: argocd-example-project
@@ -25,9 +25,7 @@ spec:
     targetRevision: main
     path: charts/argocd-helm
     helm:
-      parameters:
-      - name: image.tag
-        value: latest
-  destination:
+     valueFiles:
+      - values-main.yaml
     server: https://kubernetes.default.svc
     namespace: argocd-helm
