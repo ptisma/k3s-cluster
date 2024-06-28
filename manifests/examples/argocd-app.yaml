@@ -27,7 +27,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: charts/  # contains application spec files
+    path: charts  # contains application spec files
     repoURL: https://github.com/ptisma/argocd-helm
     targetRevision: main
 ---
