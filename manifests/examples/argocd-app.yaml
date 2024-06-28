@@ -16,14 +16,50 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd-helm-main
+  name: argocd-helm
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: argocd-example-project
+  destination:
+    namespace: argocd-helm
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: charts/  # contains application spec files
+    repoURL: https://github.com/ptisma/argocd-helm
+    targetRevision: main
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-helm-server
   namespace: argocd # The namespace must match the namespace of your Argo CD instance
 spec:
   project: argocd-example-project
   source:
     repoURL: https://github.com/ptisma/argocd-helm
     targetRevision: main
-    path: charts/argocd-helm
+    path: charts/argocd-helm-server
+    helm:
+     valueFiles:
+      - values-main.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-helm
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-helm-client
+  namespace: argocd # The namespace must match the namespace of your Argo CD instance
+spec:
+  project: argocd-example-project
+  source:
+    repoURL: https://github.com/ptisma/argocd-helm
+    targetRevision: main
+    path: charts/argocd-helm-client
     helm:
      valueFiles:
       - values-main.yaml

@@ -15,8 +15,9 @@ Longhorn will persist and replicate the volumes in a .img format in a folder loc
 /var/lib/longhorn/replicas/
 
 ### argocd-app.yaml
-
-
+This will deploy a ArgoCD project and ArgoCD applications inside it. The application is deployed in a GitOps fashion using Helm charts from the repo below. The values for the Helm chart are injected in two ways: using static value files and dynamic using external secrets for secret data. The "App of Apps" pattern was used, where the "root" App points to the repository where all the charts reside, and "child" apps are specific charts inside the repo.
+https://github.com/ptisma/argocd-helm
+docs for value file:
 https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/application.yaml
 
 ### external-secrets.yaml
