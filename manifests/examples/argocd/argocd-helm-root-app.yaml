@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argocd-example-project
+  namespace: argocd
+spec:
+  sourceRepos:
+  - 'https://github.com/ptisma/argocd-helm'
+  destinations:
+  - namespace: 'argocd-helm'
+    server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-helm
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: argocd-example-project
+  destination:
+    namespace: argocd-helm
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: manifests/examples/argocd/apps  # contains application spec files
+    repoURL: https://github.com/ptisma/k3s-cluster
+    targetRevision: main

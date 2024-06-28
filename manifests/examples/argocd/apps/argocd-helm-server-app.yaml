@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-helm-server
+  namespace: argocd # The namespace must match the namespace of your Argo CD instance
+spec:
+  project: argocd-example-project
+  source:
+    repoURL: https://github.com/ptisma/argocd-helm
+    targetRevision: main
+    path: charts/argocd-helm-server
+    helm:
+     valueFiles:
+      - values-main.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd-helm
+    
