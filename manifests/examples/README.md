@@ -26,4 +26,5 @@ https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/application
 ### external-secrets
 #### external-secrets.yaml
 This will deploy a external-secrets ClusterSecretStore and ExternalSecret. The ClusterSecretStore is using the fake provider, the ClusterSecretStore is being used by the example application "argocd-helm" which has the ExternalSecret defined in its chart.
+External Secrets Operator uses its own CRD-s: we create the ExternalSecret which references the SecretStore, think of it as a object instance of some external secret API, once the ExternalSecret "fetches the data", it stores it locally at our cluster as regular Kubernetes Secret.
 https://github.com/ptisma/argocd-helm
