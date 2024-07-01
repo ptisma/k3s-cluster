@@ -17,11 +17,22 @@ This will deploy a simple ingress which will connect to the service and deployme
 After the ingress is deployed, simply use one of the external ip of the nodes and hit the /nginx endpoint, I did preconfigure way back beore the DNS entry to point at one of my nodes, so I used that host name in the ingress.
 
 ### argocd
-#### argocd-app.yaml
-This will deploy a ArgoCD project and ArgoCD applications inside it. Create the namespace argocd-helm first. The application is deployed in a GitOps fashion using Helm charts from the repo below. The values for the Helm chart are injected in two ways: using static value files and dynamic using external secrets for secret data. The "App of Apps" pattern was used, where the "root" App points to the repository where all the charts reside, and "child" apps are specific charts inside the repo.
-https://github.com/ptisma/argocd-helm
+#### argocd-helm-root-app.yaml
+Create the namespace argocd-helm first. 
+This will deploy a ArgoCD project and ArgoCD root application. We are using the ArgoCD app-of-apps pattern, the root application will then track the kind Application manifests in the apps folder which are going to be the child applications. These then Applications will target their own specific manifests inside their perspective target repos, in this case they will deploy the Helm charts defined in https://github.com/ptisma/argocd-helm repository. Helm charts here are defined alongside the application code for sake of simplicity, this is not a good practice in GitOps and they should be decoupled.
+
+#### apps/argocd-helm-server-app.yaml
+This contains the kind Application which represents the Helm packaged argocd-helm-server application defined in https://github.com/ptisma/argocd-helm. The values for the Helm chart are injected in two ways: using static value files defined in the application repo and dynamic secret values using external secrets. Alongside the other manifests such as deployment, service etc. I have also added the ExternalSecret kind, which is going to create the regular Secret which will in fact contain this "secret" data, this eliminates the need for embedding the secret data in git.
+
+I have also added the ArgoCD sync hook, which is just a simple sleep job, in the manifest file to demonstrate the sync waves. Using sync waves on our Applications we control the flow of deployment of our Helm packaged applications, we want to deploy the argocd-helm-server before the argocd-helm-client.
+
+Sadly, when deploying Helm packaged applications using ArgoCD, the applications do not show when running helm list.
+
 docs for value file:
 https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/application.yaml
+
+#### apps/argocd-helm-client-app.yaml
+Same as above, except its deploying a argocd-helm-client, in this case I am not using the ExternalSecret, just static value file.
 
 ### external-secrets
 #### external-secrets.yaml
