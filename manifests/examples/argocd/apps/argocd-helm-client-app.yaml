@@ -4,10 +4,6 @@ metadata:
   name: argocd-helm-client
   namespace: argocd # The namespace must match the namespace of your Argo CD instance
 spec:
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
   project: argocd-example-project
   source:
     repoURL: https://github.com/ptisma/argocd-helm
