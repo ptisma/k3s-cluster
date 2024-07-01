@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: argocd-helm-server
   namespace: argocd # The namespace must match the namespace of your Argo CD instance
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   project: argocd-example-project
   source:
