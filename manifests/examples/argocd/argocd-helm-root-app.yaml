@@ -21,6 +21,10 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
   project: argocd-example-project
   destination:
     namespace: argocd-helm
