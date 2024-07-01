@@ -24,6 +24,10 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 Login via admin and secret
 
+
+### configure
+To speed up the polling of git repos for auto-sync, change the value timeout.reconciliation in argocd-cm config map
+
 ### uninstall
 helm uninstall my-argo-cd -n argocd
 kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -n argocd
