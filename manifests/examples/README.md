@@ -39,3 +39,7 @@ Same as above, except its deploying a argocd-helm-client, in this case I am not 
 This will deploy a external-secrets ClusterSecretStore and ExternalSecret. The ClusterSecretStore is using the fake provider, the ClusterSecretStore is being used by the example application "argocd-helm" which has the ExternalSecret defined in its chart.
 External Secrets Operator uses its own CRD-s: we create the ExternalSecret which references the SecretStore, think of it as a object instance of some external secret API, once the ExternalSecret "fetches the data", it stores it locally at our cluster as regular Kubernetes Secret.
 https://github.com/ptisma/argocd-helm
+
+
+#### 
+argo submit hello-world-workflow.yaml
