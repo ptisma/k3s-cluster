@@ -7,11 +7,10 @@ spec:
   templates:
     - name: whalesay              # name of the template
       container:
-        image: docker/whalesay
+        image: ptisma/whalesay
         command: [ cowsay ]
         args: [ "hello world" ]
         resources: # limit the resources
           limits:
             memory: 32Mi
             cpu: 100m
-            
