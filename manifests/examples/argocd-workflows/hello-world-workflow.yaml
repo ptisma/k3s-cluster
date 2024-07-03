@@ -4,12 +4,19 @@ metadata:
   generateName: hello-world-    # name of the workflow spec
 spec:
   entrypoint: whalesay          # invoke the whalesay template
+  arguments:
+    parameters:
+    - name: message
+      value: hello world
   templates:
     - name: whalesay              # name of the template
+      inputs:
+        parameters:
+        - name: message
       container:
         image: ptisma/whalesay
         command: [ cowsay ]
-        args: [ "hello world" ]
+        args: [ "{{inputs.parameters.message}}" ]
         resources: # limit the resources
           limits:
             memory: 32Mi
