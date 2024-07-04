@@ -1,5 +1,7 @@
 operator:
   env:
+  - name: MINIO_SERVER_URL
+    value: "https://ptisma.online"
   - name: MINIO_BROWSER_REDIRECT_URL
-    value: /minio
+    value: "https://ptisma.online/minio/"
 
