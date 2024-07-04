@@ -16,5 +16,5 @@ I will be using the MinIO as a artifact repository for my Argo Workflows CI pipe
 ### install
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm repo add minio-operator https://operator.min.io
-helm install --namespace minio-operator --create-namespace --version 5.0.15 operator minio-operator/operator
+helm upgrade --install -f values.yaml --namespace minio-operator --create-namespace --version 5.0.15 operator minio-operator/operator
 kubectl get all -n minio-operator

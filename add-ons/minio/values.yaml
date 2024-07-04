@@ -1,0 +1,5 @@
+operator:
+  env:
+  - name: MINIO_BROWSER_REDIRECT_URL
+    value: /minio
+
