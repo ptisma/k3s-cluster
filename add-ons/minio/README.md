@@ -18,3 +18,6 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm repo add minio-operator https://operator.min.io
 helm upgrade --install -f values.yaml --namespace minio-operator --create-namespace --version 5.0.15 operator minio-operator/operator
 kubectl get all -n minio-operator
+
+### uninstall  
+helm uninstall operator -n minio-operator
