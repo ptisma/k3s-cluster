@@ -2,11 +2,11 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: stripprefix
-  namespace: kubernetes-dashboard
+  namespace: minio-operator
 spec:
   stripPrefix:
     prefixes:
-      - /dashboard
+      - /minio
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -44,4 +44,3 @@ spec:
               name: console
               port:
                 number: 9090
-                
