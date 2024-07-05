@@ -1,47 +1,35 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: replacepath
-  namespace: minio-operator
-spec:
- replacePathRegex:
-    regex: "^/minio(/|$)(.*)"
-    replacement: "/${2}"
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-    traefik.ingress.kubernetes.io/router.middlewares: "minio-operator-replacepath@kubernetescrd,longhorn-system-my-auth-middleware@kubernetescrd"
   name: minio
   namespace: minio-operator
 spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - ptisma.xyz
-    - www.ptisma.xyz
-    secretName: ptisma-xyz-tls
+    - ptisma.online
+    - www.ptisma.online
+    secretName: ptisma-online-tls
   rules:
-  - host: ptisma.xyz
+  - host: ptisma.online
     http:
       paths:
         - pathType: Prefix
-          path: /minio/
+          path: /
           backend:
             service:
               name: console
               port:
                 number: 9090
-  - host: www.ptisma.xyz
+  - host: www.ptisma.online
     http:
       paths:
         - pathType: Prefix
-          path: /minio/
+          path: /
           backend:
             service:
               name: console
               port:
                 number: 9090
-                

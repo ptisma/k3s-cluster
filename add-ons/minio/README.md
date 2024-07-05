@@ -16,8 +16,17 @@ I will be using the MinIO as a artifact repository for my Argo Workflows CI pipe
 ### install
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm repo add minio-operator https://operator.min.io
-helm upgrade --install -f values.yaml --namespace minio-operator --create-namespace --version 5.0.15 operator minio-operator/operator
+helm upgrade --install --namespace minio-operator --create-namespace --version 5.0.15 operator minio-operator/operator
 kubectl get all -n minio-operator
+
+Get the JWT secret to access the console:
+kubectl -n minio-operator get secret console-sa-secret -o jsonpath="{.data.token}" | base64 --decode
+
+Access locally:
+kubectl --namespace minio-operator port-forward svc/console 9090:9090
+
+or via ingress at root path:
+kubectl apply -f ingress.yaml
 
 ### uninstall  
 helm uninstall operator -n minio-operator
