@@ -1,6 +1,8 @@
 ### minIO
 MinIO is a Kubernetes-native high performance object store with an S3-compatible API. We will install it using the MinIO Operator.
 
+Note this just installs the MinIO Operator, in order to create the tenants and operate on them, head to manifests/examples/minio.
+
 The MinIO Operator installs a Custom Resource Definition (CRD) to support describing MinIO tenants as a Kubernetes object.
 The MinIO Operator exists in its own namespace and it uses the two pods:
 - The Operator pod for the base Operator functions to deploy, manage, modify, and maintain tenants
