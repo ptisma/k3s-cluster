@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-  name: minio
-  namespace: minio-operator
+  name: tenant
+  namespace: tenant-tiny
 spec:
   ingressClassName: traefik
   tls:
@@ -17,19 +17,19 @@ spec:
     http:
       paths:
         - pathType: Prefix
-          path: /
+          path: /myminio
           backend:
             service:
-              name: console
+              name: myminio-console
               port:
-                number: 9090
+                number: 9443
   - host: www.ptisma.online
     http:
       paths:
         - pathType: Prefix
-          path: /
+          path: /myminio
           backend:
             service:
-              name: console
+              name: myminio-console 
               port:
-                number: 9090
+                number: 9443

@@ -12,6 +12,13 @@ In this folder you will find the instructions how to setup the server node. Run 
 ### k3s-agent
 In this folder you will find the instructions how to setup the agent node.
 
-### manifests
-In this folder you will find the k8 manifests which contain demo applications to test out the k3s features such as: ingress, persistence storage etc.
+### add-ons
+In this folder you will find the folders for each of the "infra" apps deployed on the cluster such as longhorn, dashboards, argocd etc. Many of them consist of operator and CRD yamls.
+This will be in future potentially moved to the separate infra repo, but for now I will keep it here.
 
+### architecture
+#### K3s
+k3s-servers:
+node-0
+k3s-agents:
+node-1

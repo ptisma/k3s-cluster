@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: minio-ubuntu-client
+  namespace: tenant-tiny
+spec:
+  containers:
+  - name: minio-ubuntu-client
+    image: ptisma/minio-ubuntu-client
+    command: ["sleep"]
+    args: ["infinity"]
