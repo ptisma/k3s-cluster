@@ -30,11 +30,11 @@ spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - ptisma.xyz
-    - www.ptisma.xyz
-    secretName: ptisma-xyz-tls
+    - ptisma.online
+    - www.ptisma.online
+    secretName: ptisma-online-tls
   rules:
-  - host: ptisma.xyz
+  - host: ptisma.online
     http:
       paths:
         - pathType: Prefix
@@ -44,7 +44,7 @@ spec:
               name: longhorn-frontend
               port:
                 number: 80
-  - host: www.ptisma.xyz
+  - host: www.ptisma.online
     http:
       paths:
         - pathType: Prefix
