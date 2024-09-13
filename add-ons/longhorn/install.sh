@@ -8,12 +8,13 @@
 #   arg1: The first argument, used for specifying the namespace where to install the longhorn
 #   arg2: The second argument, used for specifying the longhorn username
 #   arg3: The third argument, used for specifying the longhorn password
+#   arg4: The fourth argument, used for specifying the name of helm release for longhorn installation
 
 # Exit immediately if any command exits with a non-zero status
 set -e
 
 # Check if the required number of arguments is passed
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
   echo "Error: Invalid number of arguments."
   exit 1
 fi
@@ -24,7 +25,7 @@ curl -sSfL https://raw.githubusercontent.com/longhorn/longhorn/v1.6.2/scripts/en
 # Install Longhorn using Helm:
 helm repo add longhorn https://charts.longhorn.io
 helm repo update
-helm upgrade --install longhorn longhorn/longhorn --namespace "$1" --create-namespace --version 1.6.2
+helm upgrade --install "$4" longhorn/longhorn --namespace "$1" --create-namespace --version 1.7.1
 
 # Set the credentials to access the Longhorn UI:
 USER="$2"
