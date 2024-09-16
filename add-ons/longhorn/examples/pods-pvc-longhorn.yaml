@@ -1,24 +1,22 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: local-path-pvc
-  namespace: default
+  name: longhorn-vol-example
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: local-path
+  storageClassName: longhorn
   resources:
     requests:
-      storage: 2Gi
+      storage: 500Mi
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: volume-test-1
-  namespace: default
 spec:
   containers:
-  - name: volume-test-1
+  - name: volume-test
     image: nginx:stable-alpine
     imagePullPolicy: IfNotPresent
     volumeMounts:
@@ -29,16 +27,15 @@ spec:
   volumes:
   - name: volv
     persistentVolumeClaim:
-      claimName: local-path-pvc
+      claimName: longhorn-vol-example
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: volume-test-2
-  namespace: default
 spec:
   containers:
-  - name: volume-test-2
+  - name: volume-test
     image: nginx:stable-alpine
     imagePullPolicy: IfNotPresent
     volumeMounts:
@@ -49,4 +46,4 @@ spec:
   volumes:
   - name: volv
     persistentVolumeClaim:
-      claimName: local-path-pvc
+      claimName: longhorn-vol-example

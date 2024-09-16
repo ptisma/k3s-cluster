@@ -1,9 +1,9 @@
 ## Longhorn
 
 ### Motivation
-The default k3's storage provisioner is rancher.io/local-path which persists the volumes locally on the node's filesystem itself:  /var/lib/rancher/k3s/storage/.
+The default k3's storage provisioner is rancher.io/local-path which persists the volumes locally on the node's filesystem itself: /var/lib/rancher/k3s/storage/.
 
-Since I am using the multi-node cluster I want my storage to be distributed: k3s doesn’t replicate or share the data across nodes which means if the pod is moved (or rescheduled) to a different node (due to node failure, maintenance, etc.), it will no longer have access to the original node's local storage.
+This was okay while I was using the single node setup. Since I am right now using the multi-node setup I want my storage to be distributed: k3s doesn’t replicate or share the data across nodes which means if the pod is moved (or rescheduled) to a different node (due to node failure, maintenance, etc.), it will no longer have access to the original node's local storage.
 
 ### What is Longhorn?
 Longhorn is a distributed block storage system for Kubernetes applications. It is designed to provide reliable, performant, and persistent storage for stateful applications running in Kubernetes clusters.
@@ -11,13 +11,16 @@ Longhorn distributes block storage across multiple nodes in a Kubernetes cluster
 
 Longhorn creates a dedicated storage controller for each block device volume and synchronously replicates the volume across multiple replicas stored on multiple nodes. The storage controller and replicas are themselves orchestrated using Kubernetes.
 
+So in a nutshell dependency tree looks like this: Longhorn Manager -> Longhorn Engines -> Longhorn volume -> Kubernetes PV
 
 ### Longhorn's architecture on Kubernetes
 It's split in two parts: control plane and data plane. Control plane controls how data is stored, replicated, and managed across the nodes in the Kubernetes cluster. The data plane is responsible for the actual handling of data read/write operations. It provides the mechanism for storing, replicating, and serving the data to workloads in Kubernetes.
 
 Control plane is the Longhorn Manager pod, part of the daemon set, which runs on every node in the operator pattern fashion: it is responsible for creating and managing volumes in the Kubernetes cluster, and handles the API calls from the UI or the volume plugins for Kubernetes.
 
-Once the Longhorn Manager is asked to create the a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. The Engine and replicas are part of the data plane.
+The Longhorn Manager communicates with the Kubernetes API server to create a new Longhorn volume (CRD). Then the Longhorn Manager watches the API server’s response, and when it sees that the Kubernetes API server created a new Longhorn volume CR, the Longhorn Manager creates a new volume.
+
+Once the Longhorn Manager is asked to create the a volume, it creates a Longhorn Engine instance on the node the volume is attached to, and it creates a replica on each node where a replica will be placed. The Engine and replicas are part of the data plane. The Longhorn Engine always runs in the same node as the Pod that uses the Longhorn volume.
 
 The engine instance is responsible for managing the actual I/O to the volume. It doesn’t store data itself but rather coordinates the read/write operations across the replicas.
 
@@ -26,8 +29,8 @@ Both engine and replica instances are pods as well.
 
 Workflow in practice would look like this:
 - pod uses a PVC to request storage
-- CSI controller pod communicates with the Kubernetes API and Longhorn to provision a volume based on the PVC. It asks the Longhorn Manager pod to create a volume
-- Longhorn Manager pod sets up a Longhorn engine pod (controller) for the volume and schedules the required replica pods to store data on multiple nodes
+- CSI controller pod communicates with the Kubernetes API and Longhorn to provision a volume based on the PVC. It asks the Longhorn Manager pod to create a volume.
+- Longhorn Manager pod sets up a Longhorn engine pod (controller) for the volume and schedules the required replica pods to store data on multiple nodes.
 - When a pod is scheduled to a node, the CSI node plugin pod on that node ensures that the Longhorn volume is attached to the node and mounted to the correct path inside the pod’s filesystem.
 - Once the volume is attached, the Longhorn engine manages the I/O operations between the application and the replica pods. It ensures that reads/writes happen in sync with all replicas, maintaining consistency and availability.
 - When the pod is terminated, the CSI driver pod instructs the Longhorn pod engine to detach the volume from the node, and the volume becomes available for use by other pods (or can be deleted if necessary).
