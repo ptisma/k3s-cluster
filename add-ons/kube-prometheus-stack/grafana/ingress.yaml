@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-stage"
+  name: grafana
+  namespace: kube-prometheus-stack
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - ptisma.online
+    - www.ptisma.online
+    secretName: ptisma-online-tls
+  rules:
+  - host: ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: kube-prometheus-stack-grafana
+              port:
+                number: 80
+  - host: www.ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: kube-prometheus-stack-grafana
+              port:
+                number: 80
+              

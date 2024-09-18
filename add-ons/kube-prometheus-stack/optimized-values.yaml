@@ -1,0 +1,37 @@
+prometheusOperator:
+  resources:
+    requests:
+      memory: 50Mi
+      cpu: 10m
+    limits:
+      memory: 100Mi
+      cpu: 50m
+prometheus:
+  prometheusSpec:
+    resources:
+      requests:
+        memory: 200Mi
+        cpu: 100m
+      limits:
+        memory: 300Mi
+        cpu: 200m
+    retention: 12h # Lower retention period to reduce storage
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          resources:
+            requests:
+              storage: 1Gi # Reduce storage
+alertmanager:
+  enabled: false
+grafana:
+  adminPassword: ""
+  resources:
+    requests:
+      memory: 100Mi
+      cpu: 50m
+    limits:
+      memory: 200Mi
+      cpu: 100m
+  persistence:
+    enabled: false # Disable persistence if not needed

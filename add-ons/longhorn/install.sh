@@ -22,8 +22,8 @@ fi
 # Check if the node VM meets the Longhorn system requirements with a CLI tool
 curl -sSfL -o longhornctl https://github.com/longhorn/cli/releases/download/v1.7.1/longhornctl-linux-amd64
 chmod +x longhornctl
-./longhornctl check install
 ./longhornctl check preflight
+./longhornctl install preflight
 
 # Install Longhorn using Helm:
 helm repo add longhorn https://charts.longhorn.io

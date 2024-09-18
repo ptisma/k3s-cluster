@@ -24,6 +24,4 @@ Using helm:
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
-helm install my-kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 60.2.0 -n kube-prometheus-stack --create-namespace
-
-TODO
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack --version 62.7.0 -n kube-prometheus-stack --create-namespace -f optimized-values.yaml
