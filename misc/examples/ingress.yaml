@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-example
+  labels:
+    app: nginx
+  namespace: misc
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-example
+  labels:
+    app: nginx
+  namespace: misc
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-stage"
+  name: ingress-example
+  namespace: misc
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - ptisma.online
+    - www.ptisma.online
+    secretName: ptisma-online-tls
+  rules:
+  - host: ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: nginx-service-example
+              port:
+                number: 80
+  - host: www.ptisma.online
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: nginx-service-example
+              port:
+                number: 80
