@@ -1,13 +1,13 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-https-middleware
-  namespace: longhorn-system
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
----
+# apiVersion: traefik.io/v1alpha1
+# kind: Middleware
+# metadata:
+#   name: redirect-https-middleware
+#   namespace: longhorn-system
+# spec:
+#   redirectScheme:
+#     scheme: https
+#     permanent: true
+# ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -33,7 +33,8 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-rewrite-longhorn-prefix-middleware@kubernetescrd,longhorn-system-auth-middleware@kubernetescrd,longhorn-system-redirect-https-middleware@kubernetescrd"
+    # traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-rewrite-longhorn-prefix-middleware@kubernetescrd,longhorn-system-auth-middleware@kubernetescrd,longhorn-system-redirect-https-middleware@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-rewrite-longhorn-prefix-middleware@kubernetescrd,longhorn-system-auth-middleware@kubernetescrd"
   name: longhorn
   namespace: longhorn-system
 spec:
