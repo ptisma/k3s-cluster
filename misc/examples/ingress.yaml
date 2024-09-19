@@ -6,6 +6,8 @@ metadata:
     app: nginx
   namespace: misc
 spec:
+  nodeSelector:
+    kubernetes.io/hostname: node-1
   replicas: 1 
   selector:
     matchLabels:
