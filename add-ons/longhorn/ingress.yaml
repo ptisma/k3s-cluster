@@ -1,19 +1,28 @@
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: auth-middleware
+  name: secret-auth-middleware
   namespace: longhorn-system
 spec:
   basicAuth:
-    removeHeader: true
     secret: basic-auth
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: rewrite-longhorn-prefix-middleware
+  namespace: longhorn-system
+spec:
+  stripPrefixRegex:
+    regex:
+      - "^/longhorn/?"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-stage"
-    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-auth-middleware@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "longhorn-system-secret-auth-middleware@kubernetescrd,longhorn-system-rewrite-longhorn-prefix-middleware@kubernetescrd"
   name: longhorn
   namespace: longhorn-system
 spec:
@@ -28,7 +37,7 @@ spec:
     http:
       paths:
         - pathType: Prefix
-          path: "/"
+          path: "/longhorn"
           backend:
             service:
               name: longhorn-frontend
@@ -38,7 +47,7 @@ spec:
     http:
       paths:
         - pathType: Prefix
-          path: "/"
+          path: "/longhorn"
           backend:
             service:
               name: longhorn-frontend

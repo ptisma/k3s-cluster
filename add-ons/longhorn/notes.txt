@@ -1,0 +1,3 @@
+for some reason when the path /longhorn is set, the blank white page is rendered so it works only with /longhorn/
+
+use the credentials you defined in the secret to access the Longhorn UI
